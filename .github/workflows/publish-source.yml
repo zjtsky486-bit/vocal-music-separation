@@ -1,0 +1,62 @@
+name: Publish verified source
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Expand locally verified source bundle
+        shell: python
+        run: |
+          from pathlib import Path, PurePosixPath
+          import hashlib, zipfile
+          archive = Path('vocal-music-core-source.zip')
+          expected = '6da59777a99cb16e55450a9c47804448e2fa11fde3ea513826074ddaaa8c731a'
+          assert hashlib.sha256(archive.read_bytes()).hexdigest() == expected, 'Source checksum mismatch'
+          with zipfile.ZipFile(archive) as bundle:
+              entries = bundle.infolist()
+              assert len(entries) == 50 and len({e.filename for e in entries}) == 50
+              for entry in entries:
+                  parts = PurePosixPath(entry.filename).parts
+                  assert len(parts) > 1 and parts[0] == 'vocal-music-core'
+                  assert '..' not in parts and not entry.is_dir()
+                  assert entry.file_size < 5 * 1024 * 1024
+                  relative = Path(*parts[1:])
+                  assert not any(p in {'.git', '.cache', 'data', 'runtime', 'node_modules'} for p in relative.parts)
+                  assert relative.suffix.lower() not in {'.exe', '.dll', '.onnx', '.ckpt', '.pyc', '.wav', '.mp3'}
+                  if relative.parts[:2] == ('.github', 'workflows'):
+                      assert relative == Path('.github/workflows/check.yml')
+                      continue
+                  relative.parent.mkdir(parents=True, exist_ok=True)
+                  relative.write_bytes(bundle.read(entry))
+          archive.unlink()
+          print('Expanded 49 verified source files; validation workflow will be added through the browser.')
+      - run: git add --all
+      - run: npm test
+      - run: python tests/audio-source-selector.py
+      - run: python tests/handoff-guard.py
+      - run: python -m compileall -q plugins/music scripts
+      - run: python scripts/check-release.py
+      - run: git diff --cached --check
+      - name: Publish tested source tree
+        run: |
+          $workflowChanges = git diff --cached --name-only -- .github/workflows
+          if ($workflowChanges) { throw 'Workflow files must be changed through the browser' }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Publish Vocal Music Separation source and AI integration guide'
+          if ($LASTEXITCODE -ne 0) { throw 'Source commit failed' }
+          git push origin HEAD:main
+          if ($LASTEXITCODE -ne 0) { throw 'Source push failed' }
