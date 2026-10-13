@@ -1,0 +1,23 @@
+name: Separation checks
+on: [push, pull_request]
+permissions:
+  contents: read
+env:
+  PYTHONUTF8: '1'
+  PYTHONIOENCODING: 'utf-8'
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: npm test
+      - run: python tests/audio-source-selector.py
+      - run: python tests/handoff-guard.py
+      - run: python -m compileall -q plugins/music scripts
+      - run: python scripts/check-release.py
