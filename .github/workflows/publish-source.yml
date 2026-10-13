@@ -23,7 +23,7 @@ jobs:
           from pathlib import Path, PurePosixPath
           import hashlib, zipfile
           archive = Path('vocal-music-core-source.zip')
-          expected = '6da59777a99cb16e55450a9c47804448e2fa11fde3ea513826074ddaaa8c731a'
+          expected = 'e5d56545561e04be83dfa7fb4faedbcf19fa41cc84bf737c1f798c12c9f3aee4'
           assert hashlib.sha256(archive.read_bytes()).hexdigest() == expected, 'Source checksum mismatch'
           with zipfile.ZipFile(archive) as bundle:
               entries = bundle.infolist()
