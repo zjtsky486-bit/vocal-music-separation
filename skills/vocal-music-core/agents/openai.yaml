@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vocal / Music Core"
+  short_description: "Add independent vocal and music controls to Windows apps"
+  default_prompt: "Use $vocal-music-core to add local vocal and instrumental separation with independent volume controls to my Windows app."

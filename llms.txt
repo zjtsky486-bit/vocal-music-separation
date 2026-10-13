@@ -1,0 +1,19 @@
+# Vocal Music Separation
+
+> Local Windows Node.js / Electron core for real-time vocal and instrumental audio separation, independent gain controls, and safe audio route lifecycle. 人声与伴奏分离核心，可由 AI 接入桌面软件。
+
+Public source repository: https://github.com/zjtsky486-bit/vocal-music-separation. The Node.js package name remains `vocal-music-core`. It separates audio stems; it does not transcribe speech. Runtime dependencies, model artifacts, and the separately installed VB-CABLE system driver are prerequisites, not bundled GitHub source assets.
+
+## Start here
+
+- [README](./README.md): Installation, exact API, supported runtime, model contract, and local verification commands.
+- [AI integration skill](./skills/vocal-music-core/SKILL.md): Instructions for integrating the core into a user's chosen Node.js or Electron application.
+- [Agent development guidance](./AGENTS.md): Runtime ownership, cleanup, validation, source packaging, and testing invariants.
+- [Examples](./examples/): Local host integration patterns and lifecycle handling.
+
+## Runtime preparation
+
+- [Pinned runtime installer](./scripts/install-runtime.ps1): Repository-local dependency installation; inspect documented arguments before invoking.
+- [Model exporter](./scripts/export-model.py): Export entry point for compatible model artifacts described in the README.
+
+Use the documented CommonJS `createAudioService` API. Keep all host state in its explicit runtime directory. Preserve independent finite gains in `[0, 1]`, mutual exclusion, awaited shutdown and parent-death recovery, and the default 40 GiB C-drive free-space guard. Never claim completed playback when the required driver, runtime, or model is absent.

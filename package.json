@@ -1,0 +1,16 @@
+{
+  "name": "vocal-music-core",
+  "version": "0.1.0",
+  "description": "Local Windows application audio capture, vocal/music separation and independent stem controls, with AI integration skill",
+  "repository": {"type": "git", "url": "git+https://github.com/zjtsky486-bit/vocal-music-separation.git"},
+  "homepage": "https://github.com/zjtsky486-bit/vocal-music-separation#readme",
+  "bugs": {"url": "https://github.com/zjtsky486-bit/vocal-music-separation/issues"},
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "license": "MIT",
+  "os": ["win32"],
+  "engines": {"node": ">=20"},
+  "keywords": ["audio", "music", "vocal-separation", "roformer", "windows", "electron", "ai-skill"],
+  "scripts": {"test": "node --test tests/*.test.js", "demo": "node examples/node.js", "doctor": "node examples/doctor.js"},
+  "files": ["src", "plugins/music/*.py", "plugins/music/roformer-port/driver/*.py", "plugins/music/roformer-port/artifacts-balanced/manifest.json", "plugins/music/licenses", "scripts/*.py", "scripts/*.ps1", "requirements", "examples", "docs", "skills", "AGENTS.md", "llms.txt", "audio-plugin.json", "THIRD_PARTY_NOTICES.md", "LICENSE"]
+}

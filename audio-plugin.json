@@ -1,0 +1,17 @@
+{
+  "format": "vocal-music-core/v1",
+  "name": "vocal-music-core",
+  "version": "0.1.0",
+  "entrypoint": "src/index.js",
+  "types": "src/index.d.ts",
+  "skill": "skills/vocal-music-core/SKILL.md",
+  "capabilities": ["active-application-audio-sources", "automatic-source-selection", "vocal-instrumental-separation", "independent-stem-gains", "real-spectra", "route-restoration"],
+  "platform": "windows-x64-build-20348-or-later",
+  "runtime": {"node": ">=20", "python": "3.12", "gpu": "CUDA or DirectML", "routeDriver": "VB-CABLE separately installed"},
+  "modelManifest": "plugins/music/roformer-port/artifacts-balanced/manifest.json",
+  "installer": "scripts/install-runtime.ps1",
+  "diagnostics": "scripts/diagnose.py",
+  "minimumCFreeGiB": 40,
+  "containsModelWeights": false,
+  "marketplaceManifest": false
+}

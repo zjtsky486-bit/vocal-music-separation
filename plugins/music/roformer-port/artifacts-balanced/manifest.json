@@ -1,0 +1,49 @@
+{
+  "models": {
+    "mel_band_roformer_kim": {
+      "file": "mel_band_roformer_kim_T241.onnx",
+      "architecture": "mel_band_roformer",
+      "stems": [
+        "vocals"
+      ],
+      "chunk_size": 105840,
+      "frames": 241,
+      "graph_io": {
+        "input": {
+          "spec": [
+            1,
+            2050,
+            241,
+            2
+          ]
+        },
+        "output": {
+          "mask": [
+            1,
+            1,
+            2050,
+            241,
+            2
+          ]
+        }
+      },
+      "n_fft": 2048,
+      "hop_length": 441,
+      "sample_rate": 44100,
+      "num_overlap": 2,
+      "source_checkpoint": "MelBandRoformer.ckpt",
+      "source_checkpoint_sha256": "87201f4d31afb5bc79993230fc49446918425574db48c01c405e44f365c7559e",
+      "source_checkpoint_url": "https://huggingface.co/KimberleyJSN/melbandroformer/resolve/main/MelBandRoformer.ckpt",
+      "weights_author": "KimberleyJensen (KimberleyJSN)",
+      "weights_license": "MIT (declared on the HF model card)",
+      "redistributable": true,
+      "onnx_sha256": "7d3d1291a047e6baa7e35618230ebab2a1961d207ab70598677e159237bdab75",
+      "onnx_bytes": 921863688,
+      "export_patches": {
+        "flash_disabled": 12,
+        "glu_replaced": 60
+      },
+      "net_parity_cpu_max_abs": 1.1920928955078125e-06
+    }
+  }
+}
